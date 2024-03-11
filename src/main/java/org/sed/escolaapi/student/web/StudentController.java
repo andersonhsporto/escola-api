@@ -49,8 +49,7 @@ public class StudentController {
 
   @PatchMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public StudentDTO updateStudent(@PathVariable Long id, @Valid @RequestBody StudentDTO student)
-      throws BadRequestException {
+  public StudentDTO updateStudent(@PathVariable Long id, @Valid @RequestBody StudentDTO student) throws EntityNotFoundException {
     return studentService.updateStudent(id, student);
   }
 

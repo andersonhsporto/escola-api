@@ -23,6 +23,11 @@ public class RegistrationService {
 
   private final StudentRepository studentRepository;
 
+  private static final String COURSE_NOT_FOUND = "Curso não encontrado";
+  private static final String STUDENT_NOT_FOUND = "Estudante não encontrado";
+
+  private static final String REGISTRATION_NOT_FOUND = "Matricula não encontrada";
+
   public List<RegistrationDTO> getRegistrations() {
     return RegistrationDTO.fromEntity(registrationRepository.findAll());
   }
@@ -41,13 +46,13 @@ public class RegistrationService {
         registration.courseId()).isEmpty()) {
 
       if (!courseRepository.existsById(registration.courseId())) {
-        log.info("Curso não encontrado");
-        throw new BadRequestException("Curso não encontrado");
+        log.info(COURSE_NOT_FOUND);
+        throw new BadRequestException(COURSE_NOT_FOUND);
       }
 
       if (!studentRepository.existsById(registration.studentId())) {
-        log.info("Estudante não encontrado");
-        throw new BadRequestException("Estudante não encontrado");
+        log.info(STUDENT_NOT_FOUND);
+        throw new BadRequestException(STUDENT_NOT_FOUND);
       }
 
       var course = courseRepository.findById(registration.courseId()).orElseThrow(EntityNotFoundException::new);
@@ -67,13 +72,13 @@ public class RegistrationService {
     if (registrationRepository.existsById(id)) {
 
       if (!courseRepository.existsById(registration.courseId())) {
-        log.info("Curso não encontrado");
-        throw new BadRequestException("Curso não encontrado");
+        log.info(COURSE_NOT_FOUND);
+        throw new BadRequestException(COURSE_NOT_FOUND);
       }
 
       if (!studentRepository.existsById(registration.studentId())) {
-        log.info("Estudante não encontrado");
-        throw new BadRequestException("Estudante não encontrado");
+        log.info(STUDENT_NOT_FOUND);
+        throw new BadRequestException(STUDENT_NOT_FOUND);
       }
 
       Course course = courseRepository.getReferenceById(registration.courseId());
@@ -86,8 +91,8 @@ public class RegistrationService {
       registrationRepository.save(registrationEntity);
       return RegistrationDTO.fromEntity(registrationEntity);
     }
-    log.info("Matricula não encontrada");
-    throw new EntityNotFoundException("Matricula não encontrada");
+    log.info(REGISTRATION_NOT_FOUND);
+    throw new EntityNotFoundException(REGISTRATION_NOT_FOUND);
   }
 
   @Transactional
@@ -95,7 +100,7 @@ public class RegistrationService {
     if (registrationRepository.existsById(id)) {
       registrationRepository.deleteById(id);
     }
-    log.info("Matricula não encontrada");
-    throw new EntityNotFoundException("Matricula não encontrada");
+    log.info(REGISTRATION_NOT_FOUND);
+    throw new EntityNotFoundException(REGISTRATION_NOT_FOUND);
   }
 }

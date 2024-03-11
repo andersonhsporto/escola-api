@@ -40,7 +40,7 @@ public class StudentService {
     throw new BadRequestException("Student already exists");
   }
 
-  public StudentDTO updateStudent(Long id, StudentDTO student) {
+  public StudentDTO updateStudent(Long id, StudentDTO student) throws EntityNotFoundException {
     if (studentRepository.existsById(id)) {
       var studentEntity = studentRepository.findById(id).get();
 

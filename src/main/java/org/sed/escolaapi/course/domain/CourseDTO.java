@@ -33,8 +33,4 @@ public record CourseDTO(
     return new Course(id, title, credits, List.of());
   }
 
-  public List<Course> toEntity(List<CourseDTO> courses) {
-    return courses.stream().map(CourseDTO::toEntity).collect(Collectors.toList());
-  }
-
 }

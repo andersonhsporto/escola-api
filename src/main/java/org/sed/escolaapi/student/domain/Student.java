@@ -1,4 +1,4 @@
-package org.sed.escolaapi.course.domain;
+package org.sed.escolaapi.student.domain;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -7,43 +7,41 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.sed.escolaapi.registration.domain.Registration;
-import org.sed.escolaapi.registration.domain.RegistrationCreationDTO;
-import org.sed.escolaapi.registration.domain.RegistrationDTO;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @ToString
-@Table(name = "courses")
-public class Course {
+@Table(name = "students")
+public class Student {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long id;
 
-  @Column(name = "title")
-  private String title;
+  @Column(name = "name")
+  private String name;
 
-  @Column(name = "credits")
-  private int credits;
+  @Column(name = "registration_date")
+  private LocalDate registrationDate;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private List<Registration> registration;
 
-  public void updateCourse(String title, int credits) {
-    this.title = title;
-    this.credits = credits;
+  public void update(String name, LocalDate registrationDate) {
+    this.name = name;
+    this.registrationDate = registrationDate;
   }
 
 }

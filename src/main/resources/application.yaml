@@ -19,3 +19,9 @@ server:
   port: 8080
   servlet:
     context-path: /api/v1
+
+logging:
+  level:
+    root: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"

@@ -1,4 +1,4 @@
-package org.sed.escolaapi.course.web;
+package org.sed.escolaapi.registration.web;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -6,8 +6,9 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
-import org.sed.escolaapi.course.domain.CourseDTO;
-import org.sed.escolaapi.course.domain.CourseService;
+import org.sed.escolaapi.registration.domain.RegistrationCreationDTO;
+import org.sed.escolaapi.registration.domain.RegistrationDTO;
+import org.sed.escolaapi.registration.domain.RegistrationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,52 +24,54 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("/curso")
-public class CourseController {
+@RequestMapping("/matricula")
+public class RegistrationController {
 
-  private final CourseService courseService;
+  private final RegistrationService registrationService;
 
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public List<CourseDTO> getCourses() {
-    return courseService.getCourses();
+  public List<RegistrationDTO> getRegistrations() {
+    return registrationService.getRegistrations();
   }
 
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public CourseDTO getCourseById(@PathVariable Long id) throws EntityNotFoundException {
-    return courseService.getCourseById(id);
+  public RegistrationDTO getRegistrationById(@PathVariable  Long id) throws EntityNotFoundException {
+    return registrationService.getRegistrationById(id);
   }
 
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
-  public CourseDTO createCourse(@RequestBody @Valid CourseDTO course) throws BadRequestException {
-    return courseService.createCourse(course);
+  public RegistrationDTO createRegistration(@RequestBody @Valid RegistrationCreationDTO registration) throws BadRequestException {
+    return registrationService.createRegistration(registration);
   }
 
   @PatchMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public CourseDTO updateCourse(@PathVariable Long id, @RequestBody @Valid CourseDTO course)
-      throws EntityNotFoundException {
-    return courseService.updateCourse(id, course);
+  public RegistrationDTO updateRegistration(@PathVariable Long id, @RequestBody @Valid RegistrationCreationDTO registration)
+      throws EntityNotFoundException, BadRequestException {
+    return registrationService.updateRegistration(id, registration);
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteCourse(@PathVariable Long id) throws EntityNotFoundException {
-    courseService.deleteCourse(id);
+  public void deleteRegistration(@PathVariable Long id) throws EntityNotFoundException {
+    registrationService.deleteRegistration(id);
   }
 
   @ExceptionHandler(BadRequestException.class)
-  public String badRequestExceptionHandler(BadRequestException e) {
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public String handleBadRequestException(BadRequestException e) {
     log.info("Requisição inválida {}", e.getMessage());
     return e.getMessage();
   }
 
   @ExceptionHandler(EntityNotFoundException.class)
-  public String entityNotFoundExceptionHandler(EntityNotFoundException e) {
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public String handleEntityNotFoundException(EntityNotFoundException e) {
     log.info("Entidade não encontrada {}", e.getMessage());
-    return "Curso não encontrado";
+    return "Matricula não encontrada";
   }
 
 }

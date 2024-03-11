@@ -2,6 +2,7 @@ package org.sed.escolaapi.course.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,12 +10,12 @@ import java.util.stream.Collectors;
 public record CourseDTO(
 
     @JsonProperty("titulo")
-    @NotEmpty(message = "The title is required")
+    @NotEmpty(message = "O título é obrigatório")
     String title,
 
     @JsonProperty("creditos")
-    @NotEmpty(message = "The credits is required")
-    @Positive(message = "The credits must be a positive number")
+    @NotNull(message = "Os creditos são obrigatórios")
+    @Positive(message = "Os creditos devem ser um número positivo")
     Integer credits,
 
     @JsonProperty("id")
@@ -29,7 +30,7 @@ public record CourseDTO(
   }
 
   public Course toEntity() {
-    return new Course(id, title, credits);
+    return new Course(id, title, credits, List.of());
   }
 
   public List<Course> toEntity(List<CourseDTO> courses) {
